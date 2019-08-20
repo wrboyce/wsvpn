@@ -1,0 +1,17 @@
+# vi: set filetype=dockerfile
+FROM rust:slim as builder
+RUN apt-get update && \
+    apt-get install musl-tools -y && \
+    rustup target add x86_64-unknown-linux-musl && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+WORKDIR /build
+COPY Cargo.* ./
+COPY src ./src
+RUN RUSTFLAGS=-Clinker=musl-gcc \
+    cargo build \
+        --target=x86_64-unknown-linux-musl \
+        --release
+
+FROM alpine
+COPY --from=builder /build/target/x86_64-unknown-linux-musl/release/wsvpn /wsvpn
+CMD ["/wsvpn", "help"]

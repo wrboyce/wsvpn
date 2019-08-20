@@ -1,0 +1,31 @@
+version: '3.7'
+
+x-defaults: &defaults
+  build:
+    dockerfile: ./Dockerfile.dev
+    context: .
+  environment:
+    RUST_BACKTRACE: full
+    RUST_LOG: wsvpn,info
+  devices:
+    - /dev/net/tun:/dev/net/tun
+  cap_add:
+    - NET_ADMIN
+  restart: unless-stopped
+
+services:
+  server:
+    <<: *defaults
+    # container_name: server
+    expose:
+      - '1234'
+    ports:
+      - '1234:1234'
+    command: /wsvpn server 100.64.42.1/24 0.0.0.0:1234
+
+  client:
+    <<: *defaults
+    # container_name: client
+    depends_on:
+      - server
+    command: /wsvpn client ws://10.1.2.2:1234

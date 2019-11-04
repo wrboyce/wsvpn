@@ -12,7 +12,7 @@ categories = []
 
 [dependencies]
 clap = "2.33.0"
-etherparse = "0.8.2"
+etherparse = "0.8.3"
 ipnetwork = "0.14.0"
 log = "0.4.8"
 pretty_env_logger = "0.3"

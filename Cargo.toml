@@ -11,7 +11,7 @@ keywords = []
 categories = []
 
 [dependencies]
-clap = "2.33.0"
+clap = "2.33.2"
 etherparse = "0.8.2"
 ipnetwork = "0.14.0"
 log = "0.4.8"
